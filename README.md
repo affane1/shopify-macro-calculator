@@ -23,7 +23,7 @@ shopify/
 2.  Ve a **"Tienda online" > "Páginas"**.
 3.  Crea una nueva página con el nombre deseado. Verifica que la opción **'Visible'** esté seleccionada.
     
-> [!NOTA]
+> [!NOTE]
 > La página estará vacía por ahora. Le asignaremos el tema después de crearlo.
     
 
@@ -46,7 +46,7 @@ shopify/
 
 ![](/docs/images/3.png)
 
-> [!IMPORTANTE]
+> [!IMPORTANT]
 > La página estará vacía por ahora. Le asignaremos el tema después de crearlo.
 > ![](/docs/images/4.png)
 
