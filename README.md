@@ -52,3 +52,40 @@ shopify/
 > ![](/docs/images/4.png)
 
 ----------
+
+## 📊 Paso 3: Configurar los Metafields de Ingredientes
+
+1.  Ve a **"Configuración" > "Datos personalizados" > "Productos"**.
+2.  Crea los siguientes Metafields: `Calorías`, `Carbohidratos`, `Grasas`, `Proteínas`, `Categoría del ingrediente`, `Alérgenos`.
+3. Configura cada uno de estos Metacampos exactamente como se muestra en las capturas de pantalla a continuación.
+
+> [!CAUTION]
+> Al crear cada uno de los Metacampos, el campo 'Espacio de nombres y clave' debe completarse **exactamente** como se muestra en las capturas de pantalla.
+> 
+> ![](/docs/images/5.png)
+
+![](/docs/images/metafields1.png)
+![](/docs/images/metafields2.png)
+![](/docs/images/metafields3.png)
+![](/docs/images/metafields4.png)
+![](/docs/images/metafields5.png)
+![](/docs/images/metafields6.png)
+
+
+----------
+
+## 🥬 Paso 4: Crear la Colección de Ingredientes y Los Ingredientes
+
+1.  Ve a **"Productos" > "Colecciones"**.
+2.  Crea una colección con el nombre: `Ingredientes`.
+3.  Agrega a esta colección todos los productos/ingredientes que quieres que aparezcan en la calculadora.
+
+>[!NOTE]
+>Para poder añadir ingredientes a la colección, primero tendrás que crearlos. Cada ingrediente es un producto que se puede configurar según sea necesario. A continuación, tienes un ejemplo de producto de ingrediente:
+>
+>![](/docs/images/ingredient1.png)
+>![](/docs/images/ingredient2.png)
+    
+
+
+----------
