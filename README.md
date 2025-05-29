@@ -23,8 +23,22 @@ shopify/
     
 2.  Ve a **"Tienda online" > "Páginas"**.
     
-3.  Crea una nueva página con el nombre: `Calculadora de Macros`.
+3.  Crea una nueva página con el nombre deseado. Verifica que la opción **'Visible'** esté seleccionada.
     
-4.  Verifica que el *handle* sea exactamente `macro-calculator` y guarda la página después.
+> [!NOTE]
+> La página estará vacía por ahora. Le asignaremos el tema después de crearla.
     
-![](/docs/images/1.png)
+
+----------
+
+## Paso 2: Crear Plantilla Liquid Personalizada
+
+1.  Ve a **"Tienda online" > "Plantillas" > "Editar código"**.
+
+![](/docs/images/2.png)
+    
+2.  Dentro de `/templates`, crea un nuevo archivo: `page.macro-calculator.liquid`.
+
+![](/docs/images/2.png)
+    
+3.  Copia y pega el siguiente código base:
