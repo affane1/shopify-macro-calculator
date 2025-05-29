@@ -47,7 +47,8 @@ shopify/
 ![](/docs/images/3.png)
 
 > [!IMPORTANT]
-> La página estará vacía por ahora. Le asignaremos el tema después de crearlo.
+> Ahora que hemos añadido nuestro tema personalizado, ve a la nueva página que creamos y asígnale el nuevo tema. **Si el tema aún no aparece en el menú desplegable, simplemente recarga la página.**
+> 
 > ![](/docs/images/4.png)
 
 ----------
