@@ -1,216 +1,91 @@
-<link rel="stylesheet" href="{{ 'tailwind.css' | asset_url }} ">
+# Guía de Implementación: Calculadora de Macronutrientes para Shopify
 
-{% assign ingredients = collections['ingredientes'].products %}
-{% assign categories = 'Base,Proteína,Topping' | split: ',' %}
-{% assign ingredient_data = '' %}
+Esta guía está diseñada para ayudarte a implementar y mantener una calculadora de macronutrientes en tu tienda Shopify. El proyecto está pensado para integrarse fácilmente dentro de una temática ya existente y adaptarse a cambios futuros.
 
-<style>
-  /* Prevent zoom on mobile when double-tapping buttons */
-  .quantity-btn {
-    touch-action: manipulation;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-  }
-  
-  /* Allergen icon styles */
-  .allergen-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-radius: 9999px;
-    margin-left: 0.5rem;
-    font-size: 0.75rem;
-    color: white;
-    font-weight: 600;
-  }
-  
-  .allergen-vegan { background-color: #10b981; }
-  .allergen-non-vegan { background-color: #ef4444; }
-  .allergen-gluten-free { background-color: #3b82f6; }
-  .allergen-dairy-free { background-color: #8b5cf6; }
-  .allergen-spicy { background-color: #f97316; }
-</style>
+----------
 
-<div class="max-w-4xl mx-auto text-gray-600 p-6">
-  <!-- Totals -->
-  <div class="flex flex-wrap p-2 justify-around">
-    <div class="w-1/2 flex flex-col items-center mb-4">
-      <span class="block text-6xl text-black font-thin mb-3" id="total-calories">0</span>
-      <div class="text-md text-gray-600 opacity-90">Calorías</div>
-    </div>
-    <div class="w-1/2 flex flex-col items-center mb-4">
-      <span class="block text-6xl text-black font-thin mb-2" id="total-protein">0</span>
-      <div class="text-md text-gray-600 opacity-90">Proteínas</div>
-    </div>
-    <div class="w-1/2 flex flex-col items-center mb-4">
-      <span class="block text-6xl text-black font-thin mb-2" id="total-fat">0</span>
-      <div class="text-md text-gray-600 opacity-90">Grasas</div>
-    </div>
-    <div class="w-1/2 flex flex-col items-center mb-4">
-      <span class="block text-6xl text-black font-thin mb-2" id="total-carbs">0</span>
-      <div class="text-md text-gray-600 opacity-90">Carbohidratos</div>
-    </div>
-  </div>
+## 🔄 Estructura del Proyecto
 
-  <!-- Allergen Legend -->
-  <div class="flex flex-wrap gap-4 justify-center mt-6">
-    <span class="inline-flex items-center justify-center rounded-full bg-green-100 px-2.5 py-0.5 text-green-700">
-      <span class="allergen-icon allergen-vegan">V</span>
-      <p class="whitespace-nowrap ml-2">Vegano</p>
-    </span>
+Esta extensión de tema está compuesta por 2 archivos: **page.macro-calculator.liquid** y **tailwind.css**. Aquí es donde se encuentran:
+```
+shopify/
+├── templates/
+│   └── page.macro-calculator.liquid
+└── assets/
+    └── tailwind.css
+```
 
-    <span class="inline-flex items-center justify-center rounded-full bg-red-100 px-2.5 py-0.5 text-red-700">
-      <span class="allergen-icon allergen-non-vegan">NV</span>
-      <p class="whitespace-nowrap ml-2">No Vegano</p>
-    </span>
+----------
 
-    <span class="inline-flex items-center justify-center rounded-full bg-blue-100 px-2.5 py-0.5 text-blue-700">
-      <span class="allergen-icon allergen-gluten-free">G</span>
-      <p class="whitespace-nowrap ml-2">Sin gluten</p>
-    </span>
+## Paso 1: Crear una Página en Shopify
 
-    <span class="inline-flex items-center justify-center rounded-full bg-purple-100 px-2.5 py-0.5 text-purple-700">
-      <span class="allergen-icon allergen-dairy-free">L</span>
-      <p class="whitespace-nowrap ml-2">Sin lácteos</p>
-    </span>
+1.  Entra al panel de Shopify.
+2.  Ve a **"Tienda online" > "Páginas"**.
+3.  Crea una nueva página con el nombre deseado. Verifica que la opción **'Visible'** esté seleccionada.
+    
+> [!NOTE]
+> La página estará vacía por ahora. Le asignaremos el tema después de crearlo.
+    
 
-    <span class="inline-flex items-center justify-center rounded-full bg-orange-100 px-2.5 py-0.5 text-orange-700">
-      <span class="allergen-icon allergen-spicy">🌶</span>
-      <p class="whitespace-nowrap ml-2">Picante</p>
-    </span>
-  </div>
+----------
 
-  <div class="px-4 py-8">
-    {% for category in categories %}
-      <div class="mb-4">
-        <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ category }}</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-          {% for ingredient in ingredients %}
-            {% assign cat = ingredient.metafields.custom.category %}
-            {% if cat == category %}
-              <div class="flex items-center justify-between p-2">
-                <!-- Buttons -->
-                <div class="flex items-center rounded-sm border border-gray-200">
-                  <button
-                    class="size-12 leading-12 text-gray-600 transition hover:opacity-75 quantity-btn"
-                    data-title="{{ ingredient.title }}"
-                    data-change="-1"
-                  >
-                    −
-                  </button>
-                  <span
-                    class="h-12 w-12 border-transparent text-center quantity-display flex items-center justify-center"
-                    data-title="{{ ingredient.title }}"
-                    >0</span
-                  >
-                  <button
-                    class="size-12 leading-12 text-gray-600 transition hover:opacity-75 quantity-btn"
-                    data-title="{{ ingredient.title }}"
-                    data-change="1"
-                  >
-                    +
-                  </button>
-                </div>
-                <!-- Ingredients -->
-                <div class="ms-4 flex-1">
-                  <p class="text-gray-800 font-medium flex items-center">
-                    {{ ingredient.title }}
-                    {% comment %} Debug: Show raw allergen data {% endcomment %}
-                    {% if ingredient.metafields.custom.allergens %}
-                      {% assign allergens_raw = ingredient.metafields.custom.allergens | strip %}
-                      {% comment %} Remove brackets and quotes, then split by comma {% endcomment %}
-                      {% assign allergens_clean = allergens_raw | remove: '[' | remove: ']' | remove: '"' %}
-                      {% assign allergen_list = allergens_clean | split: ',' %}
-                      
-                      {% for allergen in allergen_list %}
-                        {% assign allergen_trimmed = allergen | strip | downcase %}
-                        {% case allergen_trimmed %}
-                          {% when 'picante' -%}
-                            <span class="allergen-icon allergen-spicy" title="Picante">🌶</span>
-                          {% when 'sin lácteos', 'sin lacteos' -%}
-                            <span class="allergen-icon allergen-dairy-free" title="Sin lácteos">L</span>
-                          {% when 'sin gluten' -%}
-                            <span class="allergen-icon allergen-gluten-free" title="Sin gluten">G</span>
-                          {% when 'vegano' -%}
-                            <span class="allergen-icon allergen-vegan" title="Vegano">V</span>
-                          {% when 'no vegano' -%}
-                            <span class="allergen-icon allergen-non-vegan" title="No Vegano">NV</span>
-                        {% endcase %}
-                      {% endfor %}
-                    {% endif %}
-                  </p>
-                  <p class="text-sm md:text-lg text-gray-500">
-                    {{ ingredient.metafields.custom.calories }} cal, {{ ingredient.metafields.custom.protein }}g
-                    proteínas, {{ ingredient.metafields.custom.fat }}g grasas, {{ ingredient.metafields.custom.carbs }}g
-                    carbs
-                  </p>
-                </div>
-              </div>
-              {% capture ingredient_json %}
-              {
-                "title": "{{ ingredient.title }}",
-                "calories": {{ ingredient.metafields.custom.calories | default: 0 }},
-                "protein": {{ ingredient.metafields.custom.protein | default: 0 }},
-                "fat": {{ ingredient.metafields.custom.fat | default: 0 }},
-                "carbs": {{ ingredient.metafields.custom.carbs | default: 0 }}
-              }
-            {% endcapture %}
-              {% assign ingredient_data = ingredient_data | append: ingredient_json | append: ',' %}
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
-    {% endfor %}
-  </div>
-</div>
+## Paso 2: Crear El Tema Liquid Personalizado
 
-<script>
-  const ingredientData = [{{ ingredient_data | strip_newlines | strip | remove_last: ',' }}];
-  const quantities = {};
+1.  Copia la integralidad de [este código➡️](https://raw.githubusercontent.com/affane1/shopify-macro-calculator/refs/heads/main/shopify/templates/page.macro-calculator.liquid)
+2.  Ve a **"Tienda online" > "Temas" > "Editar código"**.
 
-  ingredientData.forEach(i => quantities[i.title] = 0);
+![](/docs/images/1.png)
 
-  function round(value) {
-    return Math.round(value * 100) / 100;
-  }
+3.  Dentro de `/templates`, crea un nuevo archivo: `macro-calculator`.
 
-  function updateTotals() {
-    let total = { calories: 0, protein: 0, fat: 0, carbs: 0 };
-    ingredientData.forEach(i => {
-      const qty = quantities[i.title] || 0;
-      total.calories += i.calories * qty;
-      total.protein += i.protein * qty;
-      total.fat += i.fat * qty;
-      total.carbs += i.carbs * qty;
-    });
+![](/docs/images/2.png)
 
-    document.getElementById("total-calories").textContent = round(total.calories);
-    document.getElementById("total-protein").textContent = round(total.protein);
-    document.getElementById("total-fat").textContent = round(total.fat);
-    document.getElementById("total-carbs").textContent = round(total.carbs);
-  }
+4. Pega todo el código que copiamos anteriormente y guarda.
+5. Ahora con el segundo código. Copia la integralidad de [este código➡️](https://raw.githubusercontent.com/affane1/shopify-macro-calculator/refs/heads/main/shopify/assets/tailwind.css)
+6. Dentro de `/assets` crea un nuevo archivo: `tailwind`.
 
-  document.querySelectorAll(".quantity-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      e.preventDefault(); // Prevent any default behavior
-      
-      const title = btn.dataset.title;
-      const change = parseInt(btn.dataset.change);
-      
-      quantities[title] = Math.max(0, (quantities[title] || 0) + change);
-      
-      // Fixed selector - this was the main bug
-      const displayElement = document.querySelector(`[data-title="${title}"].quantity-display`);
-      if (displayElement) {
-        displayElement.textContent = quantities[title];
-      }
-      
-      updateTotals();
-    });
-  });
+![](/docs/images/3.png)
 
-  updateTotals();
-</script>
+> [!IMPORTANT]
+> Ahora que hemos añadido nuestro tema personalizado, ve a la nueva página que creamos y asígnale el nuevo tema. **Si el tema aún no aparece en el menú desplegable, simplemente recarga la página.**
+> 
+> ![](/docs/images/4.png)
+
+----------
+
+## 📊 Paso 3: Configurar los Metafields de Ingredientes
+
+1.  Ve a **"Configuración" > "Datos personalizados" > "Productos"**.
+2.  Crea los siguientes Metafields: `Calorías`, `Carbohidratos`, `Grasas`, `Proteínas`, `Categoría del ingrediente`, `Alérgenos`.
+3. Configura cada uno de estos Metacampos exactamente como se muestra en las capturas de pantalla a continuación.
+
+> [!CAUTION]
+> Al crear cada uno de los Metacampos, el campo 'Espacio de nombres y clave' debe completarse **exactamente** como se muestra en las capturas de pantalla.
+> 
+> ![](/docs/images/5.png)
+
+![](/docs/images/metafields1.png)
+![](/docs/images/metafields2.png)
+![](/docs/images/metafields3.png)
+![](/docs/images/metafields4.png)
+![](/docs/images/metafields5.png)
+![](/docs/images/metafields6.png)
+
+
+----------
+
+## 🥬 Paso 4: Crear la Colección de Ingredientes y Los Ingredientes
+
+1.  Ve a **"Productos" > "Colecciones"**.
+2.  Crea una colección con el nombre: `Ingredientes`.
+3.  Agrega a esta colección todos los productos/ingredientes que quieres que aparezcan en la calculadora.
+
+>[!NOTE]
+>Para poder añadir ingredientes a la colección, primero tendrás que crearlos. Cada ingrediente es un producto que se puede configurar según sea necesario. A continuación, tienes un ejemplo de producto de ingrediente:
+>
+>![](/docs/images/ingredient1.png)
+>![](/docs/images/ingredient2.png)
+    
+
+
+----------
