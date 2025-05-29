@@ -1,0 +1,18 @@
+# Ignore node_modules and package-lock
+node_modules/
+package-lock.json
+
+# Ignore everything in theme by default
+theme/*
+
+# Unignore the folders we want to keep
+!theme/assets/
+!theme/templates/
+
+# Ignore everything inside templates and assets
+theme/assets/*
+theme/templates/*
+
+# Unignore only the two specific files in theme/templates
+!theme/assets/tailwind.css
+!theme/templates/page.macro-calculator.liquid
