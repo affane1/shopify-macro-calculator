@@ -86,6 +86,4 @@ shopify/
 >![](/docs/images/ingredient1.png)
 >![](/docs/images/ingredient2.png)
     
-
-
 ----------
