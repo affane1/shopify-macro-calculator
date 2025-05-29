@@ -35,7 +35,7 @@ shopify/
 
 1.  Ve a **"Tienda online" > "Plantillas" > "Editar código"**.
 
-![](/docs/images/3.png)
+![](/docs/images/1.png)
     
 2.  Dentro de `/templates`, crea un nuevo archivo: `page.macro-calculator.liquid`.
 
