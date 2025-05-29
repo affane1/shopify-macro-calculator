@@ -20,25 +20,34 @@ shopify/
 ## Paso 1: Crear una Página en Shopify
 
 1.  Entra al panel de Shopify.
-    
 2.  Ve a **"Tienda online" > "Páginas"**.
-    
 3.  Crea una nueva página con el nombre deseado. Verifica que la opción **'Visible'** esté seleccionada.
     
-> [!NOTE]
-> La página estará vacía por ahora. Le asignaremos el tema después de crearla.
+> [!NOTA]
+> La página estará vacía por ahora. Le asignaremos el tema después de crearlo.
     
 
 ----------
 
-## Paso 2: Crear Plantilla Liquid Personalizada
+## Paso 2: Crear El Tema Liquid Personalizado
 
-1.  Ve a **"Tienda online" > "Plantillas" > "Editar código"**.
+1.  Copia la integralidad de [este código➡️](https://raw.githubusercontent.com/affane1/shopify-macro-calculator/refs/heads/main/shopify/templates/page.macro-calculator.liquid)
+2.  Ve a **"Tienda online" > "Temas" > "Editar código"**.
 
 ![](/docs/images/1.png)
-    
-2.  Dentro de `/templates`, crea un nuevo archivo: `page.macro-calculator.liquid`.
+
+3.  Dentro de `/templates`, crea un nuevo archivo: `macro-calculator`.
 
 ![](/docs/images/2.png)
-    
-3.  Copia y pega el siguiente código base:
+
+4. Pega todo el código que copiamos anteriormente y guarda.
+5. Ahora con el segundo código. Copia la integralidad de [este código➡️](https://raw.githubusercontent.com/affane1/shopify-macro-calculator/refs/heads/main/shopify/assets/tailwind.css)
+6. Dentro de `/assets` crea un nuevo archivo: `tailwind`.
+
+![](/docs/images/3.png)
+
+> [!IMPORTANTE]
+> La página estará vacía por ahora. Le asignaremos el tema después de crearlo.
+> ![](/docs/images/4.png)
+
+----------
