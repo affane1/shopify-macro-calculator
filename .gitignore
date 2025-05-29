@@ -3,16 +3,16 @@ node_modules/
 package-lock.json
 
 # Ignore everything in theme by default
-theme/*
+shopify/*
 
 # Unignore the folders we want to keep
-!theme/assets/
-!theme/templates/
+!shopify/assets/
+!shopify/templates/
 
 # Ignore everything inside templates and assets
-theme/assets/*
-theme/templates/*
+shopify/assets/*
+shopify/templates/*
 
 # Unignore only the two specific files in theme/templates
-!theme/assets/tailwind.css
-!theme/templates/page.macro-calculator.liquid
+!shopify/assets/tailwind.css
+!shopify/templates/page.macro-calculator.liquid
